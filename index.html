@@ -257,7 +257,7 @@
 
         .layout {
             display: grid;
-            grid-template-columns: minmax(0, 1.4fr) minmax(0, 2.1fr);
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 2fr);
             gap: 22px;
         }
 
@@ -267,7 +267,10 @@
             padding: 16px 14px 16px 14px;
             border: 1px solid rgba(255,255,255,0.08);
             max-height: 520px;
-            overflow-y: auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         body.theme-light .games-list {
             background: rgba(255,255,255,0.9);
@@ -277,9 +280,7 @@
             background: rgba(10,5,32,0.95);
         }
 
-        .games-list::-webkit-scrollbar {
-            width: 6px;
-        }
+        .games-list::-webkit-scrollbar { width: 6px; }
         .games-list::-webkit-scrollbar-thumb {
             background: #2c2cff;
             border-radius: 999px;
@@ -290,7 +291,121 @@
             text-transform: uppercase;
             opacity: 0.75;
             letter-spacing: 0.12em;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-search {
+            width: 100%;
+            padding: 7px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(4,6,20,0.9);
+            color: inherit;
+            font-size: 12px;
+            outline: none;
+        }
+        .filter-search::placeholder { opacity: 0.6; }
+        body.theme-light .filter-search {
+            background: #f7f7ff;
+            border-color: rgba(0,0,0,0.16);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .filter-chip {
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(6,8,26,0.9);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            opacity: 0.85;
+            transition: 0.18s;
+        }
+        .filter-chip:hover { opacity: 1; }
+        .filter-chip.active {
+            background: var(--accentMain);
+            border-color: transparent;
+            box-shadow: 0 0 12px rgba(58,58,245,0.7);
+        }
+        body.theme-light .filter-chip {
+            background: #f3f4ff;
+            border-color: rgba(0,0,0,0.12);
+        }
+
+        .sort-select {
+            font-size: 11px;
+            border-radius: 999px;
+            padding: 4px 8px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(7,10,28,0.9);
+            color: inherit;
+            outline: none;
+        }
+        body.theme-light .sort-select {
+            background: #f4f4ff;
+            border-color: rgba(0,0,0,0.18);
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-random {
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(9,11,30,0.95);
+            color: inherit;
+            padding: 4px 9px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.18s;
+        }
+        .filter-random:hover {
+            background: var(--accentMain);
+            box-shadow: 0 0 12px rgba(58,58,245,0.7);
+        }
+        body.theme-light .filter-random {
+            background: #ffffff;
+            border-color: rgba(0,0,0,0.16);
+        }
+
+        .games-scroll {
+            margin-top: 4px;
+            overflow-y: auto;
+            padding-right: 3px;
+        }
+        .games-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .games-scroll::-webkit-scrollbar-thumb {
+            background: #2c2cff;
+            border-radius: 999px;
         }
 
         .game-card {
@@ -607,9 +722,7 @@
             cursor: pointer;
             transition: 0.18s ease;
         }
-        .theme-pill:hover {
-            background: var(--accentMain);
-        }
+        .theme-pill:hover { background: var(--accentMain); }
         .theme-pill.active {
             background: var(--accentMain);
             box-shadow: 0 0 10px rgba(58,58,245,0.6);
@@ -637,9 +750,7 @@
             .hero {
                 grid-template-columns: minmax(0, 1fr);
             }
-            .hero-preview {
-                order: -1;
-            }
+            .hero-preview { order: -1; }
             .layout {
                 grid-template-columns: minmax(0, 1fr);
             }
@@ -650,12 +761,8 @@
         }
 
         @media (max-width: 600px) {
-            .hero-text h1 {
-                font-size: 24px;
-            }
-            .details {
-                padding: 14px;
-            }
+            .hero-text h1 { font-size: 24px; }
+            .details { padding: 14px; }
         }
     </style>
 </head>
@@ -728,97 +835,36 @@
     </section>
 
     <section class="layout">
-        <aside class="games-list" id="gamesList">
+        <aside class="games-list">
             <div class="games-list-title">игры в подборке</div>
 
-            <div class="game-card active" data-id="dusk">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1trm.png');"></div>
-                <div>
-                    <div class="game-meta-title">DUSK</div>
-                    <div class="game-meta-tags">ретро-шутер • хардкор • одиночная игра</div>
-                    <div class="game-meta-extra">для фанатов Quake / Blood</div>
+            <div class="filter-bar">
+                <input id="searchInput" class="filter-search" type="text" placeholder="Поиск по названию, жанру, тегам">
+                <div class="filter-row">
+                    <div class="filter-chips">
+                        <button class="filter-chip active" data-tag="all">все</button>
+                        <button class="filter-chip" data-tag="retro">ретро</button>
+                        <button class="filter-chip" data-tag="boomer">boomer shooter</button>
+                        <button class="filter-chip" data-tag="fast">fast-paced</button>
+                    </div>
+                    <select id="sortSelect" class="sort-select">
+                        <option value="recommended">рекоменд.</option>
+                        <option value="fast">самые быстрые</option>
+                        <option value="oldschool">олдскул</option>
+                        <option value="new">новые</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <label class="toggle-row">
+                        <input type="checkbox" id="lowSpecOnly">
+                        <span>Идёт на слабом ПК</span>
+                    </label>
+                    <button id="randomBtn" class="filter-random">🎲 Рандом</button>
                 </div>
             </div>
 
-            <div class="game-card" data-id="ultrakill">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co2f0x.png');"></div>
-                <div>
-                    <div class="game-meta-title">ULTRAKILL</div>
-                    <div class="game-meta-tags">адреналин • мясо • аркадная стилистика</div>
-                    <div class="game-meta-extra">микс Quake + Devil May Cry</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="ionfury">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1nzb.png');"></div>
-                <div>
-                    <div class="game-meta-title">Ion Fury</div>
-                    <div class="game-meta-tags">олдскул • билд-энджин • киберпанк</div>
-                    <div class="game-meta-extra">атмосфера Duke Nukem 3D</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="amid">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1u7i.png');"></div>
-                <div>
-                    <div class="game-meta-title">AMID EVIL</div>
-                    <div class="game-meta-tags">магию вместо пушек • цветной хаос</div>
-                    <div class="game-meta-extra">дух Heretic / Hexen</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="quake">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1r6x.png');"></div>
-                <div>
-                    <div class="game-meta-title">Quake (Remaster)</div>
-                    <div class="game-meta-tags">классика • скорость • аренки</div>
-                    <div class="game-meta-extra">тот самый вайб девяностых</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="doom2">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1x8v.png');"></div>
-                <div>
-                    <div class="game-meta-title">DOOM II</div>
-                    <div class="game-meta-tags">олдскул • демоны • легенда жанра</div>
-                    <div class="game-meta-extra">пойдет даже на картошке</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="prodeus">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co2f7u.png');"></div>
-                <div>
-                    <div class="game-meta-title">Prodeus</div>
-                    <div class="game-meta-tags">мясной шутер • псевдо-пиксели</div>
-                    <div class="game-meta-extra">современный DOOM в олд-форме</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="devildaggers">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1yjp.png');"></div>
-                <div>
-                    <div class="game-meta-title">Devil Daggers</div>
-                    <div class="game-meta-tags">арена • один уровень • скилл-тест</div>
-                    <div class="game-meta-extra">выжить как можно дольше</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="warframe">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmu.png');"></div>
-                <div>
-                    <div class="game-meta-title">Warframe</div>
-                    <div class="game-meta-tags">кооп • паркур • лут</div>
-                    <div class="game-meta-extra">бесплатный sci-fi экшен</div>
-                </div>
-            </div>
-
-            <div class="game-card" data-id="titanfall2">
-                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1t0d.png');"></div>
-                <div>
-                    <div class="game-meta-title">Titanfall 2 (кампания)</div>
-                    <div class="game-meta-tags">сюжет • мехи • скоростной геймплей</div>
-                    <div class="game-meta-extra">одна из лучших сингл-кампаний</div>
-                </div>
+            <div class="games-scroll" id="gamesContainer">
+                <!-- сюда будут вставляться карточки -->
             </div>
         </aside>
 
@@ -852,6 +898,7 @@
 <script>
     const gamesData = {
         dusk: {
+            id: "dusk",
             title: "DUSK",
             genre: "ретро-шутер • одиночная игра",
             desc: "DUSK — быстрый шутер в духе Quake, Blood и Doom. Минималистичная 3D-графика, очень резвый геймплей, сложные арены и куча секретов. Отличный вариант, если хочешь чистый олдскул без лишней болтовни.",
@@ -859,141 +906,192 @@
             pill2: "Сложность: средне / сложно",
             pill3: "Железо: отлично для слабых видеокарт",
             tagline: "ретро-шутер в стиле Quake",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1trm.png",
             shots: [
-                "https://i.imgur.com/7Y5S9hF.jpeg",
-                "https://i.imgur.com/mv5h3wN.jpeg",
-                "https://i.imgur.com/1vKcPGC.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1trm.png"
+            ],
+            tags: ["retro","boomer","fast","singleplayer"],
+            lowSpec: true,
+            speed: 4,
+            year: 2018,
+            score: 9
         },
         ultrakill: {
+            id: "ultrakill",
             title: "ULTRAKILL",
             genre: "ультра-динамичный шутер • аркада",
-            desc: "ULTRAKILL — смесь классического шутера и слэшера: прыжки, дабл-джампы, дэш, кровь, комбо и бешеный темп. Всё стилизовано под раннюю 3D-графику, так что нагрузка на железо не бешеная, но реакция нужна звериная.",
+            desc: "ULTRAKILL — смесь классического шутера и слэшера: прыжки, дабл-джампы, дэш, кровь, комбо и бешеный темп. Стиль под раннюю 3D-графику, так что картинка простая, но очень читаемая.",
             pill1: "Темп: безумно высокий",
             pill2: "Сложность: нужно привыкнуть",
             pill3: "Железо: нормально даже без топовой видеокарты",
-            tagline: "Quake на спидах и с комбо-системой",
+            tagline: "Quake на спидах с комбо-системой",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2f0x.png",
             shots: [
-                "https://i.imgur.com/R3C8GdJ.jpeg",
-                "https://i.imgur.com/vlH7xF5.jpeg",
-                "https://i.imgur.com/2s9U7uN.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co2f0x.png"
+            ],
+            tags: ["fast","boomer","retro","singleplayer"],
+            lowSpec: true,
+            speed: 5,
+            year: 2020,
+            score: 9.5
         },
         ionfury: {
+            id: "ionfury",
             title: "Ion Fury",
-            genre: "олдшкол шутер на билд-энджине",
-            desc: "Ion Fury сделан на том же движке, что Duke Nukem 3D. Отличный пиксельный киберпанк с коридорами, секретами и живыми врагами. Играется как классика, но очень плавно и приятно.",
+            genre: "олдскул шутер на билд-энджине",
+            desc: "Ion Fury сделан на том же движке, что Duke Nukem 3D. Пиксельный киберпанк, коридоры, секреты и узнаваемый геймплей. Очень ламповый олдскул.",
             pill1: "Темп: высокий, но не безумный",
             pill2: "Сложность: честная, без тупых моментов",
             pill3: "Железо: идёт вообще на всём",
             tagline: "современный Duke Nukem 3D-вибе",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1nzb.png",
             shots: [
-                "https://i.imgur.com/J5hU9dM.jpeg",
-                "https://i.imgur.com/8q7Vq2S.jpeg",
-                "https://i.imgur.com/cW9Jw5z.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1nzb.png"
+            ],
+            tags: ["retro","boomer","singleplayer"],
+            lowSpec: true,
+            speed: 3,
+            year: 2019,
+            score: 8.5
         },
         amid: {
+            id: "amid",
             title: "AMID EVIL",
             genre: "фэнтези-шутер • магия вместо пушек",
-            desc: "AMID EVIL — как если бы Heretic и Hexen ожили в 2020-х. Летающие локации, яркие цвета, магические \"пушки\" и дикая вертикальность арен. Визуал простой, но очень стильный.",
+            desc: "AMID EVIL — как если бы Heretic и Hexen ожили в 2020-х. Летающие локации, яркие цвета, магические \"пушки\" и дикая вертикальность арен.",
             pill1: "Темп: высокий",
             pill2: "Сложность: бодрый mid-core",
             pill3: "Железо: комфортно для среднего ноута",
-            tagline: "олдскул, но с фэнтези и магией",
+            tagline: "олдскул с фэнтези и магией",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1u7i.png",
             shots: [
-                "https://i.imgur.com/Gf6yV5M.jpeg",
-                "https://i.imgur.com/3D4mZkX.jpeg",
-                "https://i.imgur.com/FxFuoKp.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1u7i.png"
+            ],
+            tags: ["retro","fast","singleplayer"],
+            lowSpec: true,
+            speed: 4,
+            year: 2019,
+            score: 8.7
         },
         quake: {
+            id: "quake",
             title: "Quake (Remaster)",
             genre: "легендарный шутер • классика жанра",
             desc: "Quake Remaster — обновлённая версия легенды. Те же быстрые дуги движения, стрейф-джампы и мрачные уровни, но с более чистой картинкой и поддержкой современных систем.",
             pill1: "Темп: очень высокий",
-            pill2: "Сложность: зависит от уровня",
+            pill2: "Сложность: зависит от карты",
             pill3: "Железо: отлично идёт даже на старых машинах",
             tagline: "тот самый Quake, только почище",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r6x.png",
             shots: [
-                "https://i.imgur.com/GiDl6G7.jpeg",
-                "https://i.imgur.com/tX1S0Vt.jpeg",
-                "https://i.imgur.com/1pV8S2l.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r6x.png"
+            ],
+            tags: ["retro","boomer","fast","singleplayer"],
+            lowSpec: true,
+            speed: 4,
+            year: 1996,
+            score: 9.2
         },
         doom2: {
+            id: "doom2",
             title: "DOOM II",
             genre: "олдскул-шутер • демоны и дробовик",
-            desc: "DOOM II — легендарное продолжение первого DOOM. Простая, но цепляющая формула: ты, демоны, дробовик и лабиринт из коридоров. Вечный классический темп без кат-сцен и лишнего.",
+            desc: "DOOM II — легендарное продолжение первого DOOM. Ты, демоны, дробовик и лабиринт уровней. Никаких кат-сцен, только чистый шутерный кайф.",
             pill1: "Темп: постоянный экшен",
-            pill2: "Сложность: зависит от выбранной сложности",
+            pill2: "Сложность: зависит от выбранного уровня",
             pill3: "Железо: запустится почти на калькуляторе",
             tagline: "история шутеров начинается тут",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x8v.png",
             shots: [
-                "https://i.imgur.com/R6X58z4.jpeg",
-                "https://i.imgur.com/xzvZy5B.jpeg",
-                "https://i.imgur.com/aYbZQ2X.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x8v.png"
+            ],
+            tags: ["retro","boomer","singleplayer"],
+            lowSpec: true,
+            speed: 3,
+            year: 1994,
+            score: 9
         },
         prodeus: {
+            id: "prodeus",
             title: "Prodeus",
             genre: "мясной боевик • псевдо-пиксели",
-            desc: "Prodeus — современный DOOM, пропущенный через фильтр пиксельной стилизации. Море крови, плотный саундтрек и мощная стрельба. Графика выглядит круто, но нагрузка мягче, чем у AAA-игр.",
+            desc: "Prodeus — современный DOOM, пропущенный через фильтр пиксельной стилизации. Море крови, плотный саундтрек и мощная стрельба.",
             pill1: "Темп: высокий, динамичный",
             pill2: "Сложность: местами суровая",
-            pill3: "Железо: лучше иметь видеокарту, но можно подкрутить настройки",
-            tagline: "кровавый DOOM в пиксельном обличье",
+            pill3: "Железо: лучше видеокарта, но можно урезать настройки",
+            tagline: "кровавый DOOM в пиксельном облике",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2f7u.png",
             shots: [
-                "https://i.imgur.com/2diXKxq.jpeg",
-                "https://i.imgur.com/DnE7Gkt.jpeg",
-                "https://i.imgur.com/qW3gBuJ.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co2f7u.png"
+            ],
+            tags: ["fast","boomer","singleplayer"],
+            lowSpec: false,
+            speed: 4,
+            year: 2022,
+            score: 8.8
         },
         devildaggers: {
+            id: "devildaggers",
             title: "Devil Daggers",
             genre: "арена-шутер • рекорды и выживание",
-            desc: "Devil Daggers — одна арена, один уровень, один шанс. Ты появляешься в круге и держишь оборону как можно дольше. Мрачно, атмосферно и максимально зависательно для любителей челленджа.",
+            desc: "Devil Daggers — одна арена, один шанс. Нужно выжить как можно дольше среди лавины демонических тварей. Очень хардкорный тест на реакцию.",
             pill1: "Темп: растёт с каждой секундой",
             pill2: "Сложность: очень высокая",
             pill3: "Железо: требовательность мизерная",
             tagline: "идеален как «одна попытка перед сном»",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1yjp.png",
             shots: [
-                "https://i.imgur.com/jpP9uRr.jpeg",
-                "https://i.imgur.com/fRFRzvA.jpeg",
-                "https://i.imgur.com/naV2ikY.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1yjp.png"
+            ],
+            tags: ["fast","retro","singleplayer"],
+            lowSpec: true,
+            speed: 5,
+            year: 2016,
+            score: 8.4
         },
         warframe: {
+            id: "warframe",
             title: "Warframe",
             genre: "кооперативный экшен • паркур и гринд",
-            desc: "Warframe — бесплатный sci-fi экшен с акцентом на скорость, паркур, способности и прокачку. Можно спокойно играть соло, но в коопе раскрывается сильнее. Хороший вариант, если хочется подвигацца и пострелять онлайн.",
+            desc: "Warframe — бесплатный sci-fi экшен с упором на паркур, способности и постоянный лут. Хороший вариант, если хочется онлайна и движения.",
             pill1: "Темп: высокий, много движения",
             pill2: "Сложность: разобраться поначалу сложновато",
-            pill3: "Железо: оптимизация норм, но видеокарта всё-таки нужна",
+            pill3: "Железо: оптимизация норм, но видеокарта нужна",
             tagline: "бесплатный космический паркур-шутер",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmu.png",
             shots: [
-                "https://i.imgur.com/XowsmFn.jpeg",
-                "https://i.imgur.com/vDhX9ct.jpeg",
-                "https://i.imgur.com/7pGVA7L.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmu.png"
+            ],
+            tags: ["fast","co-op"],
+            lowSpec: false,
+            speed: 4,
+            year: 2013,
+            score: 8.3
         },
         titanfall2: {
+            id: "titanfall2",
             title: "Titanfall 2 (кампания)",
             genre: "сюжетный шутер • мехи и паркур",
-            desc: "Titanfall 2 — кампания на 6–8 часов, но почти каждая миссия запоминается. Сочетание быстрых перемещений по стенам, стрельбы и управления огромным мехом делает игру очень динамичной.",
-            pill1: "Темп: чередование экшена и спокойных моментов",
+            desc: "Titanfall 2 — кампания на 6–8 часов, где почти каждая миссия что-то новое. Стенки, паркур, робот-мех и очень приятный геймплей.",
+            pill1: "Темп: чередование экшена и спокойных сцен",
             pill2: "Сложность: комфортная, без боли",
-            pill3: "Железо: придётся чуть ужать графику на слабом GPU, но оно того стоит",
-            tagline: "один из лучших шутеров с сюжетом",
+            pill3: "Железо: придётся ужать графику на слабом GPU",
+            tagline: "одна из лучших сингл-кампаний в шутерах",
+            cover: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1t0d.png",
             shots: [
-                "https://i.imgur.com/oHk2IUx.jpeg",
-                "https://i.imgur.com/6QggFfW.jpeg",
-                "https://i.imgur.com/8iInt7g.jpeg"
-            ]
+                "https://images.igdb.com/igdb/image/upload/t_cover_big/co1t0d.png"
+            ],
+            tags: ["fast","singleplayer"],
+            lowSpec: false,
+            speed: 4,
+            year: 2016,
+            score: 9.1
         }
     };
 
-    const gameCards = document.querySelectorAll(".game-card");
+    const gamesListOrder = Object.keys(gamesData);
+
+    const gamesContainer = document.getElementById("gamesContainer");
     const detailsContainer = document.getElementById("detailsContainer");
     const titleEl = document.getElementById("detailsTitle");
     const genreEl = document.getElementById("detailsGenre");
@@ -1007,26 +1105,79 @@
     const galleryImage = document.getElementById("galleryImage");
     const galleryDots = document.getElementById("galleryDots");
 
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const lowSpecOnly = document.getElementById("lowSpecOnly");
+    const randomBtn = document.getElementById("randomBtn");
+    const filterChips = document.querySelectorAll(".filter-chip");
+
+    const settingsToggle = document.getElementById("settingsToggle");
+    const settingsPanel = document.getElementById("settingsPanel");
+    const themeButtons = document.querySelectorAll(".theme-pill");
+    const compactToggle = document.getElementById("compactToggle");
+    const brightnessRange = document.getElementById("brightnessRange");
+    const bodyEl = document.body;
+
     let currentGameId = "dusk";
     let currentShotIndex = 0;
+    let gameCards = [];
+    let currentTag = "all";
+    let currentSort = "recommended";
+
+    function createGameCard(game) {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.dataset.id = game.id;
+
+        card.innerHTML = `
+            <div class="game-thumb" style="background-image:url('${game.cover}');"></div>
+            <div>
+                <div class="game-meta-title">${game.title}</div>
+                <div class="game-meta-tags">${game.genre}</div>
+                <div class="game-meta-extra">${game.lowSpec ? "идёт на слабом ПК" : "лучше среднее железо"}</div>
+            </div>
+        `;
+
+        card.addEventListener("click", () => {
+            setActiveCard(card);
+            updateDetails(game.id);
+        });
+
+        return card;
+    }
+
+    function buildGameList() {
+        gamesContainer.innerHTML = "";
+        gameCards = [];
+
+        gamesListOrder.forEach(id => {
+            const g = gamesData[id];
+            const card = createGameCard(g);
+            gamesContainer.appendChild(card);
+            gameCards.push(card);
+        });
+    }
 
     function buildDots(game) {
         galleryDots.innerHTML = "";
-        game.shots.forEach((_, idx) => {
+        const count = game.shots.length;
+        for (let i = 0; i < count; i++) {
             const dot = document.createElement("div");
-            dot.className = "gallery-dot" + (idx === currentShotIndex ? " active" : "");
+            dot.className = "gallery-dot" + (i === currentShotIndex ? " active" : "");
             galleryDots.appendChild(dot);
-        });
+        }
     }
 
     function updateGallery(game) {
         if (!game.shots || !game.shots.length) return;
         const url = game.shots[currentShotIndex];
+
         galleryImage.classList.add("fade");
         setTimeout(() => {
             galleryImage.style.backgroundImage = `url('${url}')`;
             galleryImage.classList.remove("fade");
         }, 160);
+
         buildDots(game);
     }
 
@@ -1049,7 +1200,7 @@
 
     function setActiveCard(card) {
         gameCards.forEach(c => c.classList.remove("active"));
-        card.classList.add("active");
+        if (card) card.classList.add("active");
     }
 
     function updateDetails(id) {
@@ -1076,22 +1227,94 @@
         updateGallery(g);
     }
 
-    gameCards.forEach(card => {
-        card.addEventListener("click", () => {
-            const id = card.getAttribute("data-id");
-            setActiveCard(card);
-            updateDetails(id);
+    function applyFilters() {
+        const query = searchInput.value.trim().toLowerCase();
+        const visible = [];
+
+        gameCards.forEach(card => {
+            const id = card.dataset.id;
+            const g = gamesData[id];
+            if (!g) return;
+
+            let ok = true;
+
+            if (query) {
+                const hay = (g.title + " " + g.genre + " " + (g.tags || []).join(" ")).toLowerCase();
+                if (!hay.includes(query)) ok = false;
+            }
+
+            if (ok && currentTag !== "all") {
+                if (!g.tags || !g.tags.includes(currentTag)) ok = false;
+            }
+
+            if (ok && lowSpecOnly.checked && !g.lowSpec) ok = false;
+
+            if (ok) visible.push(card);
         });
-    });
+
+        visible.sort((a, b) => {
+            const ga = gamesData[a.dataset.id];
+            const gb = gamesData[b.dataset.id];
+
+            switch (currentSort) {
+                case "fast":
+                    return (gb.speed || 0) - (ga.speed || 0);
+                case "oldschool":
+                    return (ga.year || 9999) - (gb.year || 9999); // старые выше
+                case "new":
+                    return (gb.year || 0) - (ga.year || 0);       // новые выше
+                case "recommended":
+                default:
+                    return (gb.score || 0) - (ga.score || 0);
+            }
+        });
+
+        gameCards.forEach(card => {
+            card.style.display = "none";
+        });
+
+        visible.forEach(card => {
+            card.style.display = "grid";
+            gamesContainer.appendChild(card);
+        });
+
+        return visible;
+    }
+
+    function initFilters() {
+        searchInput.addEventListener("input", () => {
+            applyFilters();
+        });
+
+        sortSelect.addEventListener("change", () => {
+            currentSort = sortSelect.value;
+            applyFilters();
+        });
+
+        lowSpecOnly.addEventListener("change", () => {
+            applyFilters();
+        });
+
+        filterChips.forEach(chip => {
+            chip.addEventListener("click", () => {
+                filterChips.forEach(c => c.classList.remove("active"));
+                chip.classList.add("active");
+                currentTag = chip.dataset.tag || "all";
+                applyFilters();
+            });
+        });
+
+        randomBtn.addEventListener("click", () => {
+            const visible = applyFilters();
+            if (!visible.length) return;
+            const randomCard = visible[Math.floor(Math.random() * visible.length)];
+            randomCard.scrollIntoView({ behavior: "smooth", block: "center" });
+            setActiveCard(randomCard);
+            updateDetails(randomCard.dataset.id);
+        });
+    }
 
     /* Настройки */
-    const settingsToggle = document.getElementById("settingsToggle");
-    const settingsPanel = document.getElementById("settingsPanel");
-    const themeButtons = document.querySelectorAll(".theme-pill");
-    const compactToggle = document.getElementById("compactToggle");
-    const brightnessRange = document.getElementById("brightnessRange");
-    const bodyEl = document.body;
-
     settingsToggle.addEventListener("click", () => {
         settingsPanel.classList.toggle("open");
     });
@@ -1118,7 +1341,14 @@
     });
 
     /* Инициализация */
-    updateDetails(currentGameId);
+    buildGameList();
+    initFilters();
+    const firstCard = gameCards.find(c => c.dataset.id === currentGameId) || gameCards[0];
+    if (firstCard) {
+        setActiveCard(firstCard);
+        updateDetails(firstCard.dataset.id);
+    }
+    applyFilters();
 </script>
 
 </body>
