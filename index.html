@@ -2,50 +2,131 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Мой первый сайт</title>
-    <meta name="description" content="Просто тестовый сайт-пустышка :)">
+    <title>ddrakkx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: radial-gradient(circle at top, #2b7cff, #050816);
+            font-family: "Inter", Arial, sans-serif;
+            background: #0d0d0f;
             color: #fff;
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100vh;
+            overflow: hidden;
         }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1.6s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
         .card {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 24px 32px;
-            border-radius: 18px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.6);
             text-align: center;
-            max-width: 420px;
+            padding: 40px 55px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 0 50px rgba(0,0,0,0.4);
+            animation: appear 1.8s ease forwards;
+            transform: translateY(25px);
+            opacity: 0;
         }
+
+        @keyframes appear {
+            0%   { transform: translateY(25px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
         h1 {
-            margin: 0 0 10px;
-            font-size: 28px;
-        }
-        p {
-            margin: 6px 0;
-            opacity: 0.9;
-        }
-        .tag {
-            margin-top: 14px;
-            font-size: 13px;
+            font-size: 38px;
+            margin-bottom: 6px;
             letter-spacing: 1px;
-            text-transform: uppercase;
-            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.7;
+            margin-bottom: 40px;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .btn {
+            padding: 12px 26px;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            background: #1a1a1d;
+            border: 1px solid #ffffff22;
+            transition: 0.25s;
+            backdrop-filter: blur(6px);
+        }
+
+        .btn:hover {
+            background: #3a3af5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(50,70,255,0.4);
+        }
+
+        .circle {
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            background: radial-gradient(circle, #3a3af5 0%, #000 65%);
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: 0.4;
+            animation: float 12s infinite alternate ease-in-out;
+        }
+
+        .circle:nth-child(1) {
+            top: -120px;
+            left: -120px;
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            from { transform: translate(0, 0); }
+            to   { transform: translate(40px, -30px); }
         }
     </style>
 </head>
+
 <body>
-    <div class="card">
-        <h1>Привет, это мой сайт</h1>
-        <p>Я просто тестирую, как делать сайты :)</p>
-        <p>Автор: <b>ТВОЁ_ИМЯ</b></p>
-        <p class="tag">#моя_первая_страница</p>
+
+    <div class="circle"></div>
+    <div class="circle"></div>
+
+    <div class="card fade-in">
+        <h1>ddrakkx</h1>
+        <div class="subtitle">минималистичный сайт</div>
+
+        <div class="btn-row">
+            <a href="#" class="btn">Кнопка 1</a>
+            <a href="#" class="btn">Кнопка 2</a>
+        </div>
     </div>
+
 </body>
 </html>
