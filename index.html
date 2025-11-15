@@ -16,45 +16,39 @@
             justify-content: center;
             height: 100vh;
             overflow: hidden;
+            transition: 0.4s ease;
         }
 
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 1.6s forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
+        body.light {
+            background: #f4f4f7;
+            color: #000;
         }
 
         .card {
             text-align: center;
             padding: 40px 55px;
             border-radius: 22px;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(14px);
-            box-shadow: 0 0 50px rgba(0,0,0,0.4);
-            animation: appear 1.8s ease forwards;
+            box-shadow: 0 0 50px rgba(0,0,0,0.35);
+            animation: fadeIn 1.4s forwards;
             transform: translateY(25px);
             opacity: 0;
         }
 
-        @keyframes appear {
-            0%   { transform: translateY(25px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
             font-size: 38px;
             margin-bottom: 6px;
-            letter-spacing: 1px;
-            font-weight: 600;
         }
 
         .subtitle {
             font-size: 16px;
-            opacity: 0.7;
+            opacity: 0.75;
             margin-bottom: 40px;
         }
 
@@ -70,11 +64,15 @@
             color: white;
             text-decoration: none;
             font-size: 15px;
-            letter-spacing: 0.5px;
             background: #1a1a1d;
-            border: 1px solid #ffffff22;
+            border: 1px solid #ffffff30;
             transition: 0.25s;
-            backdrop-filter: blur(6px);
+        }
+
+        body.light .btn {
+            color: #000;
+            background: #ffffff;
+            border: 1px solid #dcdcdc;
         }
 
         .btn:hover {
@@ -83,50 +81,49 @@
             box-shadow: 0 8px 18px rgba(50,70,255,0.4);
         }
 
-        .circle {
-            position: absolute;
-            width: 270px;
-            height: 270px;
-            background: radial-gradient(circle, #3a3af5 0%, #000 65%);
-            border-radius: 50%;
-            filter: blur(110px);
-            opacity: 0.4;
-            animation: float 12s infinite alternate ease-in-out;
+        #hiddenText {
+            margin-top: 25px;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.5s ease;
+            font-size: 15px;
         }
 
-        .circle:nth-child(1) {
-            top: -120px;
-            left: -120px;
-            animation-delay: 0s;
+        #hiddenText.show {
+            opacity: 1;
+            max-height: 200px;
         }
 
-        .circle:nth-child(2) {
-            bottom: -150px;
-            right: -150px;
-            animation-delay: 4s;
-        }
-
-        @keyframes float {
-            from { transform: translate(0, 0); }
-            to   { transform: translate(40px, -30px); }
-        }
     </style>
 </head>
 
 <body>
 
-    <div class="circle"></div>
-    <div class="circle"></div>
-
-    <div class="card fade-in">
+    <div class="card">
         <h1>ddrakkx</h1>
-        <div class="subtitle">минималистичный сайт</div>
+        <div class="subtitle">минимализм + анимации</div>
 
         <div class="btn-row">
-            <a href="#" class="btn">Кнопка 1</a>
-            <a href="#" class="btn">Кнопка 2</a>
+            <button class="btn" onclick="toggleText()">Показать текст</button>
+            <button class="btn" onclick="toggleTheme()">Тема</button>
+        </div>
+
+        <div id="hiddenText">
+            Вот я и появился... 😎🔥  
+            (анимация работает без второго сайта)
         </div>
     </div>
+
+    <script>
+        function toggleText() {
+            document.getElementById("hiddenText").classList.toggle("show");
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("light");
+        }
+    </script>
 
 </body>
 </html>
