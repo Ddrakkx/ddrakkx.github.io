@@ -2,128 +2,595 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>ddrakkx</title>
+    <title>Игровой каталог ddrakkx</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: "Inter", Arial, sans-serif;
-            background: #0d0d0f;
-            color: #fff;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1b2140, #050712 60%, #020308 100%);
+            color: #f4f4f8;
+            min-height: 100vh;
+        }
+
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #3a3af5;
+            border-radius: 4px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(16px);
+            background: linear-gradient(to right, rgba(5,7,18,0.96), rgba(10,12,35,0.92));
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            transition: 0.4s ease;
+            justify-content: space-between;
         }
 
-        body.light {
-            background: #f4f4f7;
-            color: #000;
-        }
-
-        .card {
-            text-align: center;
-            padding: 40px 55px;
-            border-radius: 22px;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(14px);
-            box-shadow: 0 0 50px rgba(0,0,0,0.35);
-            animation: fadeIn 1.4s forwards;
-            transform: translateY(25px);
-            opacity: 0;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(25px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
-            font-size: 38px;
-            margin-bottom: 6px;
-        }
-
-        .subtitle {
-            font-size: 16px;
-            opacity: 0.75;
-            margin-bottom: 40px;
-        }
-
-        .btn-row {
+        .logo {
             display: flex;
-            justify-content: center;
-            gap: 18px;
+            align-items: center;
+            gap: 10px;
         }
 
-        .btn {
-            padding: 12px 26px;
-            border-radius: 30px;
-            color: white;
-            text-decoration: none;
-            font-size: 15px;
-            background: #1a1a1d;
-            border: 1px solid #ffffff30;
+        .logo-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #3a3af5, #9b3af5);
+            box-shadow: 0 0 18px rgba(117, 87, 255, 0.9);
+        }
+
+        .logo-text {
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .header-tag {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 26px 20px 60px;
+        }
+
+        .hero {
+            margin-bottom: 26px;
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            gap: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .hero-text p {
+            font-size: 14px;
+            opacity: 0.85;
+            max-width: 480px;
+            line-height: 1.5;
+        }
+
+        .hero-chip-row {
+            margin-top: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(10,12,40,0.7);
+        }
+
+        .hero-preview {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            background: radial-gradient(circle at top, #3a3af5, #050712);
+            min-height: 140px;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.65);
+        }
+
+        .hero-preview::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(120deg, rgba(255,255,255,0.12), transparent 40%);
+            opacity: 0.7;
+            mix-blend-mode: screen;
+        }
+
+        .hero-preview-inner {
+            position: relative;
+            z-index: 1;
+            padding: 16px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .hero-preview-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .hero-preview-game {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .hero-preview-footer {
+            font-size: 11px;
+            opacity: 0.8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .hero-bar {
+            margin-top: 10px;
+            width: 100%;
+            height: 5px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .hero-bar-fill {
+            width: 78%;
+            height: 100%;
+            background: linear-gradient(90deg, #5bf0ff, #3a3af5, #f55bff);
+            animation: gradientSlide 2.8s infinite alternate ease-in-out;
+        }
+
+        @keyframes gradientSlide {
+            from { transform: translateX(-10%); }
+            to   { transform: translateX(15%); }
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 2.1fr);
+            gap: 22px;
+        }
+
+        .games-list {
+            background: rgba(5,7,20,0.9);
+            border-radius: 18px;
+            padding: 16px 14px 16px 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        .games-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .games-list::-webkit-scrollbar-thumb {
+            background: #2c2cff;
+            border-radius: 999px;
+        }
+
+        .games-list-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            letter-spacing: 0.12em;
+            margin-bottom: 10px;
+        }
+
+        .game-card {
+            display: grid;
+            grid-template-columns: 72px minmax(0, 1fr);
+            gap: 10px;
+            padding: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.22s ease;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .game-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid transparent;
+            background: linear-gradient(120deg, rgba(255,255,255,0.22), transparent);
+            opacity: 0;
+            pointer-events: none;
             transition: 0.25s;
         }
 
-        body.light .btn {
-            color: #000;
-            background: #ffffff;
-            border: 1px solid #dcdcdc;
+        .game-card:hover::before {
+            opacity: 0.6;
         }
 
-        .btn:hover {
-            background: #3a3af5;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(50,70,255,0.4);
+        .game-card:hover {
+            background: rgba(58, 58, 245, 0.18);
+            transform: translateY(-1px);
         }
 
-        #hiddenText {
-            margin-top: 25px;
-            opacity: 0;
-            max-height: 0;
+        .game-card.active {
+            background: rgba(58, 58, 245, 0.27);
+            box-shadow: 0 0 20px rgba(58,58,245,0.65);
+        }
+
+        .game-thumb {
+            width: 72px;
+            height: 72px;
+            border-radius: 10px;
             overflow: hidden;
-            transition: 0.5s ease;
-            font-size: 15px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
-        #hiddenText.show {
-            opacity: 1;
-            max-height: 200px;
+        .game-meta-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
         }
 
+        .game-meta-tags {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .game-meta-extra {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        .details {
+            background: rgba(7, 11, 28, 0.95);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 18px 18px 20px;
+            position: relative;
+            overflow: hidden;
+            min-height: 260px;
+        }
+
+        .details-glow {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(90, 124, 255, 0.65), transparent 70%);
+            filter: blur(16px);
+            opacity: 0.22;
+            top: -80px;
+            right: -70px;
+            pointer-events: none;
+        }
+
+        .details-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .details-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            opacity: 0.75;
+            margin-bottom: 6px;
+        }
+
+        .details-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .details-genre {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .details-desc {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .details-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .pill {
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(10, 14, 40, 0.7);
+        }
+
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(8px);
+            animation: fadeUp 0.38s forwards ease-out;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 880px) {
+            .hero {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .hero-preview {
+                order: -1;
+            }
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 16px;
+            }
+            .hero-text h1 {
+                font-size: 24px;
+            }
+            .details {
+                padding: 16px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="card">
-        <h1>ddrakkx</h1>
-        <div class="subtitle">минимализм + анимации</div>
-
-        <div class="btn-row">
-            <button class="btn" onclick="toggleText()">Показать текст</button>
-            <button class="btn" onclick="toggleTheme()">Тема</button>
+<header>
+    <div class="header-inner">
+        <div class="logo">
+            <div class="logo-circle"></div>
+            <div class="logo-text">ddrakkx</div>
         </div>
-
-        <div id="hiddenText">
-            Вот я и появился... 😎🔥  
-            (анимация работает без второго сайта)
-        </div>
+        <div class="header-tag">подборка шутеров и экшена</div>
     </div>
+</header>
 
-    <script>
-        function toggleText() {
-            document.getElementById("hiddenText").classList.toggle("show");
-        }
+<main>
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Твой небольшой каталог игр</h1>
+            <p>Подборка динамичных шутеров и экшен-игр, которые должны хорошо зайти по темпу и не убить ноут слабой видеокартой. Выбери игру слева — справа появится описание с эффектами.</p>
+            <div class="hero-chip-row">
+                <div class="chip">shooters</div>
+                <div class="chip">fast-paced</div>
+                <div class="chip">old&nbsp;+&nbsp;stylized graphics</div>
+                <div class="chip">singleplayer focus</div>
+            </div>
+        </div>
 
-        function toggleTheme() {
-            document.body.classList.toggle("light");
-        }
-    </script>
+        <div class="hero-preview">
+            <div class="hero-preview-inner">
+                <div>
+                    <div class="hero-preview-title">сейчас выбрана</div>
+                    <div class="hero-preview-game" id="previewGameTitle">DUSK</div>
+                </div>
+                <div class="hero-preview-footer">
+                    <span>⚡ каталог ddrakkx</span>
+                    <span id="previewTagline">ретро-шутер в стиле Quake</span>
+                </div>
+                <div class="hero-bar">
+                    <div class="hero-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</body>
-</html>
+    <section class="layout">
+        <aside class="games-list" id="gamesList">
+            <div class="games-list-title">игры в подборке</div>
+
+            <!-- Каждая карточка игры -->
+            <div class="game-card active" data-id="dusk">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1trm.png');"></div>
+                <div>
+                    <div class="game-meta-title">DUSK</div>
+                    <div class="game-meta-tags">ретро-шутер • хардкор • одиночная игра</div>
+                    <div class="game-meta-extra">для фанатов Quake / Blood</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="ultrakill">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co2f0x.png');"></div>
+                <div>
+                    <div class="game-meta-title">ULTRAKILL</div>
+                    <div class="game-meta-tags">адреналин • мясо • аркадная стилистика</div>
+                    <div class="game-meta-extra">микс Quake + Devil May Cry</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="ionfury">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1nzb.png');"></div>
+                <div>
+                    <div class="game-meta-title">Ion Fury</div>
+                    <div class="game-meta-tags">олдскул • билд-энджин • киберпанк</div>
+                    <div class="game-meta-extra">атмосфера Duke Nukem 3D</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="amid">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1u7i.png');"></div>
+                <div>
+                    <div class="game-meta-title">AMID EVIL</div>
+                    <div class="game-meta-tags">магию вместо пушек • цветной хаос</div>
+                    <div class="game-meta-extra">дух Heretic / Hexen</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="quake">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1r6x.png');"></div>
+                <div>
+                    <div class="game-meta-title">Quake (Remaster)</div>
+                    <div class="game-meta-tags">классика • скорость • аренки</div>
+                    <div class="game-meta-extra">тот самый вайб девяностых</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="doom2">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1x8v.png');"></div>
+                <div>
+                    <div class="game-meta-title">DOOM II</div>
+                    <div class="game-meta-tags">олдскул • демоны • легенда жанра</div>
+                    <div class="game-meta-extra">пойдет даже на картошке</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="prodeus">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co2f7u.png');"></div>
+                <div>
+                    <div class="game-meta-title">Prodeus</div>
+                    <div class="game-meta-tags">мясной шутер • псевдо-пиксели</div>
+                    <div class="game-meta-extra">современный DOOM в олд-форме</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="devildaggers">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1yjp.png');"></div>
+                <div>
+                    <div class="game-meta-title">Devil Daggers</div>
+                    <div class="game-meta-tags">арена • один уровень • скилл-тест</div>
+                    <div class="game-meta-extra">выжить как можно дольше</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="warframe">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmu.png');"></div>
+                <div>
+                    <div class="game-meta-title">Warframe</div>
+                    <div class="game-meta-tags">кооп • паркур • лут</div>
+                    <div class="game-meta-extra">бесплатный sci-fi экшен</div>
+                </div>
+            </div>
+
+            <div class="game-card" data-id="titanfall2">
+                <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1t0d.png');"></div>
+                <div>
+                    <div class="game-meta-title">Titanfall 2 (кампания)</div>
+                    <div class="game-meta-tags">сюжет • мехи • скоростной геймплей</div>
+                    <div class="game-meta-extra">одна из лучших сингл-кампаний</div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="details">
+            <div class="details-glow"></div>
+            <div class="details-inner fade-enter" id="detailsContainer">
+                <!-- Контент игры будет подставляться JS -->
+                <div class="details-label">описание игры</div>
+                <div class="details-title" id="detailsTitle">DUSK</div>
+                <div class="details-genre" id="detailsGenre">ретро-шутер • одиночная игра</div>
+                <div class="details-desc" id="detailsDesc">
+                    DUSK — это быстрый шутер в духе старых Quake, Blood и Doom. Минималистичная графика, мрачные уровни, куча секретов и аккуратная хардкорность. Идеально, если хочешь именно «тот самый» старый фпс, но с современным комфортом.
+                </div>
+                <div class="details-row">
+                    <div class="pill" id="detailsPill1">Темп: высокий</div>
+                    <div class="pill" id="detailsPill2">Сложность: для опытных</div>
+                    <div class="pill" id="detailsPill3">Железо: идёт на слабом GPU</div>
+                </div>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script>
+    const gamesData = {
+        dusk: {
+            title: "DUSK",
+            genre: "ретро-шутер • одиночная игра",
+            desc: "DUSK — быстрый шутер в духе Quake, Blood и Doom. Минималистичная 3D-графика, очень резвый геймплей, сложные арены и куча секретов. Отличный вариант, если хочешь чистый олдскул без лишней болтовни.",
+            pill1: "Темп: высокий",
+            pill2: "Сложность: средне / сложно",
+            pill3: "Железо: отлично для слабых видеокарт",
+            tagline: "ретро-шутер в стиле Quake"
+        },
+        ultrakill: {
+            title: "ULTRAKILL",
+            genre: "ультра-динамичный шутер • аркада",
+            desc: "ULTRAKILL — смесь классического шутера и слэшера: прыжки, дабл-джампы, дэш, кровь, комбо и бешеный темп. Всё стилизовано под раннюю 3D-графику, так что нагрузка на железо не бешеная, но реакция нужна звериная.",
+            pill1: "Темп: безумно высокий",
+            pill2: "Сложность: нужно привыкнуть",
+            pill3: "Железо: нормально даже без топовой видеокарты",
+            tagline: "Quake на спидах и с комбо-системой"
+        },
+        ionfury: {
+            title: "Ion Fury",
+            genre: "олдшкол шутер на билд-энджине",
+            desc: "Ion Fury сделан на том же движке, что Duke Nukem 3D. Отличный пиксельный киберпанк с коридорами, секретами и живыми врагами. Играется как классика, но очень плавно и приятно.",
+            pill1: "Темп: высокий, но не безумный",
+            pill2: "Сложность: честная, без тупых моментов",
+            pill3: "Железо: идёт вообще на всём",
+            tagline: "современный Duke Nukem 3D-вибе"
+        },
+        amid: {
+            title: "AMID EVIL",
+            genre: "фэнтези-шутер • магия вместо пушек",
+            desc: "AMID EVIL — как если бы Heretic и Hexen ожили в 2020-х. Летающие локации, яркие цвета, магические \"пушки\" и дикая вертикальность арен. Визуал простой, но очень стильный.",
+            pill1: "Темп: высокий",
+            pill2: "Сложность: бодрый mid-core",
+            pill3: "Железо: комфортно для среднего ноута",
+            tagline: "олдскул, но с фэнтези и магией"
+        },
+        quake: {
+            title: "Quake (Remaster)",
+            genre: "легендарный шутер • классика жанра",
+            desc: "Quake Remaster — обновлённая версия легенды. Те же быстрые дуги движения, стрейф-джампы и мрачные уровни, но с более чистой картинкой и поддержкой современных систем.",
+            pill1: "Темп: очень высокий",
+            pill2: "Сложность: зависит от уровня",
+            pill3: "Железо: отлично идёт даже на старых машинах",
+            tagline: "тот самый Quake, только почище"
+        },
+        doom2: {
+            title: "DOOM II",
