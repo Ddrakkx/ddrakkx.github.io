@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
+        :root {
+            --siteBrightness: 1;
+            --accentMain: #3a3af5;
+            --accentNeon: #b65bff;
+            --accentSoft: #5bf0ff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,14 +24,30 @@
             background: radial-gradient(circle at top, #1b2140, #050712 60%, #020308 100%);
             color: #f4f4f8;
             min-height: 100vh;
+            filter: brightness(var(--siteBrightness));
+            transition: background 0.35s ease, color 0.35s ease, filter 0.25s ease;
         }
 
         body::-webkit-scrollbar {
             width: 8px;
         }
         body::-webkit-scrollbar-thumb {
-            background: #3a3af5;
+            background: var(--accentMain);
             border-radius: 4px;
+        }
+
+        /* Темы */
+        body.theme-dark {
+            background: radial-gradient(circle at top, #1b2140, #050712 60%, #020308 100%);
+            color: #f4f4f8;
+        }
+        body.theme-light {
+            background: radial-gradient(circle at top, #f5f6fb, #e3e5f3 55%, #d6d7e5 100%);
+            color: #14151f;
+        }
+        body.theme-neon {
+            background: radial-gradient(circle at top, #200833, #050314 55%, #050307 100%);
+            color: #f7efff;
         }
 
         header {
@@ -35,6 +58,13 @@
             background: linear-gradient(to right, rgba(5,7,18,0.96), rgba(10,12,35,0.92));
             border-bottom: 1px solid rgba(255,255,255,0.06);
         }
+        body.theme-light header {
+            background: linear-gradient(to right, rgba(244,244,252,0.92), rgba(229,231,247,0.95));
+            border-bottom-color: rgba(0,0,0,0.06);
+        }
+        body.theme-neon header {
+            background: linear-gradient(to right, rgba(6,2,28,0.96), rgba(34,9,53,0.95));
+        }
 
         .header-inner {
             max-width: 1100px;
@@ -43,6 +73,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 14px;
         }
 
         .logo {
@@ -55,7 +86,7 @@
             width: 30px;
             height: 30px;
             border-radius: 999px;
-            background: radial-gradient(circle, #3a3af5, #9b3af5);
+            background: radial-gradient(circle, var(--accentMain), var(--accentNeon));
             box-shadow: 0 0 18px rgba(117, 87, 255, 0.9);
         }
 
@@ -66,9 +97,41 @@
             text-transform: uppercase;
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .header-tag {
             font-size: 12px;
             opacity: 0.8;
+            white-space: nowrap;
+        }
+
+        .settings-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(8,10,30,0.9);
+            color: #f4f4f8;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+        }
+        .settings-btn:hover {
+            background: var(--accentMain);
+            box-shadow: 0 0 14px rgba(58,58,245,0.7);
+        }
+
+        body.theme-light .settings-btn {
+            background: rgba(255,255,255,0.9);
+            color: #222;
+            border-color: rgba(0,0,0,0.15);
         }
 
         main {
@@ -92,7 +155,7 @@
         .hero-text p {
             font-size: 14px;
             opacity: 0.85;
-            max-width: 480px;
+            max-width: 520px;
             line-height: 1.5;
         }
 
@@ -112,21 +175,31 @@
             border: 1px solid rgba(255,255,255,0.16);
             background: rgba(10,12,40,0.7);
         }
+        body.theme-light .chip {
+            background: rgba(255,255,255,0.9);
+            border-color: rgba(0,0,0,0.12);
+        }
 
         .hero-preview {
             position: relative;
             border-radius: 18px;
             overflow: hidden;
-            background: radial-gradient(circle at top, #3a3af5, #050712);
+            background: radial-gradient(circle at top, var(--accentMain), #050712);
             min-height: 140px;
             box-shadow: 0 18px 45px rgba(0,0,0,0.65);
+        }
+        body.theme-light .hero-preview {
+            background: radial-gradient(circle at top, #5f6bff, #2d3fe0);
+        }
+        body.theme-neon .hero-preview {
+            background: radial-gradient(circle at top, #b65bff, #401772);
         }
 
         .hero-preview::before {
             content: "";
             position: absolute;
             inset: 0;
-            background-image: linear-gradient(120deg, rgba(255,255,255,0.12), transparent 40%);
+            background-image: linear-gradient(120deg, rgba(255,255,255,0.18), transparent 40%);
             opacity: 0.7;
             mix-blend-mode: screen;
         }
@@ -154,7 +227,7 @@
 
         .hero-preview-footer {
             font-size: 11px;
-            opacity: 0.8;
+            opacity: 0.9;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -173,7 +246,7 @@
         .hero-bar-fill {
             width: 78%;
             height: 100%;
-            background: linear-gradient(90deg, #5bf0ff, #3a3af5, #f55bff);
+            background: linear-gradient(90deg, var(--accentSoft), var(--accentMain), var(--accentNeon));
             animation: gradientSlide 2.8s infinite alternate ease-in-out;
         }
 
@@ -195,6 +268,13 @@
             border: 1px solid rgba(255,255,255,0.08);
             max-height: 520px;
             overflow-y: auto;
+        }
+        body.theme-light .games-list {
+            background: rgba(255,255,255,0.9);
+            border-color: rgba(0,0,0,0.08);
+        }
+        body.theme-neon .games-list {
+            background: rgba(10,5,32,0.95);
         }
 
         .games-list::-webkit-scrollbar {
@@ -225,6 +305,11 @@
             position: relative;
         }
 
+        body.compact .game-card {
+            grid-template-columns: 56px minmax(0, 1fr);
+            padding: 6px;
+        }
+
         .game-card::before {
             content: "";
             position: absolute;
@@ -245,10 +330,24 @@
             background: rgba(58, 58, 245, 0.18);
             transform: translateY(-1px);
         }
+        body.theme-light .game-card:hover {
+            background: rgba(98, 108, 255, 0.08);
+        }
+        body.theme-neon .game-card:hover {
+            background: rgba(182, 91, 255, 0.18);
+        }
 
         .game-card.active {
             background: rgba(58, 58, 245, 0.27);
             box-shadow: 0 0 20px rgba(58,58,245,0.65);
+        }
+        body.theme-light .game-card.active {
+            background: rgba(90, 100, 255, 0.16);
+            box-shadow: 0 0 16px rgba(80,80,255,0.35);
+        }
+        body.theme-neon .game-card.active {
+            background: rgba(182,91,255,0.22);
+            box-shadow: 0 0 22px rgba(182,91,255,0.7);
         }
 
         .game-thumb {
@@ -259,6 +358,10 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+        }
+        body.compact .game-thumb {
+            width: 56px;
+            height: 56px;
         }
 
         .game-meta-title {
@@ -287,6 +390,13 @@
             overflow: hidden;
             min-height: 260px;
         }
+        body.theme-light .details {
+            background: rgba(255,255,255,0.95);
+            border-color: rgba(0,0,0,0.06);
+        }
+        body.theme-neon .details {
+            background: radial-gradient(circle at top, rgba(56,12,92,0.7), rgba(7,10,26,0.96));
+        }
 
         .details-glow {
             position: absolute;
@@ -299,6 +409,9 @@
             top: -80px;
             right: -70px;
             pointer-events: none;
+        }
+        body.theme-neon .details-glow {
+            background: radial-gradient(circle, rgba(182, 91, 255, 0.75), transparent 70%);
         }
 
         .details-inner {
@@ -347,6 +460,10 @@
             border: 1px solid rgba(255,255,255,0.2);
             background: rgba(10, 14, 40, 0.7);
         }
+        body.theme-light .pill {
+            background: rgba(237,238,252,0.9);
+            border-color: rgba(0,0,0,0.1);
+        }
 
         .fade-enter {
             opacity: 0;
@@ -361,6 +478,161 @@
             }
         }
 
+        /* Галерея */
+        .gallery {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            background: #050712;
+        }
+        body.theme-light .gallery {
+            background: #dfe2fb;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.3s ease, transform 0.35s ease;
+        }
+
+        .gallery-image.fade {
+            opacity: 0;
+            transform: scale(1.03);
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            border: none;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+        .gallery-nav:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        .gallery-nav.left { left: 10px; }
+        .gallery-nav.right { right: 10px; }
+
+        .gallery-dots {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+        .gallery-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.4);
+        }
+        .gallery-dot.active {
+            background: #fff;
+        }
+
+        /* Панель настроек */
+        .settings-panel {
+            position: fixed;
+            top: 60px;
+            right: 18px;
+            width: 240px;
+            background: rgba(10,12,30,0.96);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+            padding: 14px 14px 16px;
+            font-size: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-6px);
+            transition: 0.2s ease;
+            z-index: 60;
+        }
+
+        body.theme-light .settings-panel {
+            background: rgba(248,249,255,0.98);
+            border-color: rgba(0,0,0,0.12);
+        }
+        body.theme-neon .settings-panel {
+            background: rgba(17,9,40,0.98);
+        }
+
+        .settings-panel.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .settings-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            opacity: 0.85;
+            margin-bottom: 6px;
+        }
+
+        .settings-group {
+            margin-bottom: 10px;
+        }
+
+        .theme-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .theme-pill {
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(8,10,30,0.9);
+            color: #f4f4f8;
+            padding: 4px 9px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.18s ease;
+        }
+        .theme-pill:hover {
+            background: var(--accentMain);
+        }
+        .theme-pill.active {
+            background: var(--accentMain);
+            box-shadow: 0 0 10px rgba(58,58,245,0.6);
+        }
+        body.theme-light .theme-pill {
+            background: rgba(255,255,255,0.9);
+            color: #222;
+            border-color: rgba(0,0,0,0.16);
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .settings-range {
+            width: 100%;
+        }
+
         @media (max-width: 880px) {
             .hero {
                 grid-template-columns: minmax(0, 1fr);
@@ -371,23 +643,24 @@
             .layout {
                 grid-template-columns: minmax(0, 1fr);
             }
+            .settings-panel {
+                right: 10px;
+                width: 220px;
+            }
         }
 
         @media (max-width: 600px) {
-            .card {
-                padding: 16px;
-            }
             .hero-text h1 {
                 font-size: 24px;
             }
             .details {
-                padding: 16px;
+                padding: 14px;
             }
         }
     </style>
 </head>
 
-<body>
+<body class="theme-dark">
 
 <header>
     <div class="header-inner">
@@ -395,9 +668,34 @@
             <div class="logo-circle"></div>
             <div class="logo-text">ddrakkx</div>
         </div>
-        <div class="header-tag">подборка шутеров и экшена</div>
+        <div class="header-actions">
+            <div class="header-tag">подборка шутеров и экшена</div>
+            <button class="settings-btn" id="settingsToggle">⚙</button>
+        </div>
     </div>
 </header>
+
+<div class="settings-panel" id="settingsPanel">
+    <div class="settings-group">
+        <div class="settings-title">Тема</div>
+        <div class="theme-row">
+            <button class="theme-pill active" data-theme="dark">Тёмная</button>
+            <button class="theme-pill" data-theme="light">Светлая</button>
+            <button class="theme-pill" data-theme="neon">Неоновая</button>
+        </div>
+    </div>
+    <div class="settings-group">
+        <div class="settings-title">Список игр</div>
+        <label class="toggle-row">
+            <input type="checkbox" id="compactToggle">
+            <span>Компактный режим</span>
+        </label>
+    </div>
+    <div class="settings-group">
+        <div class="settings-title">Яркость сайта</div>
+        <input class="settings-range" type="range" id="brightnessRange" min="80" max="120" value="100">
+    </div>
+</div>
 
 <main>
     <section class="hero">
@@ -433,7 +731,6 @@
         <aside class="games-list" id="gamesList">
             <div class="games-list-title">игры в подборке</div>
 
-            <!-- Каждая карточка игры -->
             <div class="game-card active" data-id="dusk">
                 <div class="game-thumb" style="background-image:url('https://images.igdb.com/igdb/image/upload/t_cover_big/co1trm.png');"></div>
                 <div>
@@ -528,7 +825,14 @@
         <section class="details">
             <div class="details-glow"></div>
             <div class="details-inner fade-enter" id="detailsContainer">
-                <!-- Контент игры будет подставляться JS -->
+
+                <div class="gallery">
+                    <button class="gallery-nav left" onclick="prevShot()">‹</button>
+                    <div class="gallery-image" id="galleryImage"></div>
+                    <button class="gallery-nav right" onclick="nextShot()">›</button>
+                    <div class="gallery-dots" id="galleryDots"></div>
+                </div>
+
                 <div class="details-label">описание игры</div>
                 <div class="details-title" id="detailsTitle">DUSK</div>
                 <div class="details-genre" id="detailsGenre">ретро-шутер • одиночная игра</div>
@@ -554,7 +858,12 @@
             pill1: "Темп: высокий",
             pill2: "Сложность: средне / сложно",
             pill3: "Железо: отлично для слабых видеокарт",
-            tagline: "ретро-шутер в стиле Quake"
+            tagline: "ретро-шутер в стиле Quake",
+            shots: [
+                "https://i.imgur.com/7Y5S9hF.jpeg",
+                "https://i.imgur.com/mv5h3wN.jpeg",
+                "https://i.imgur.com/1vKcPGC.jpeg"
+            ]
         },
         ultrakill: {
             title: "ULTRAKILL",
@@ -563,7 +872,12 @@
             pill1: "Темп: безумно высокий",
             pill2: "Сложность: нужно привыкнуть",
             pill3: "Железо: нормально даже без топовой видеокарты",
-            tagline: "Quake на спидах и с комбо-системой"
+            tagline: "Quake на спидах и с комбо-системой",
+            shots: [
+                "https://i.imgur.com/R3C8GdJ.jpeg",
+                "https://i.imgur.com/vlH7xF5.jpeg",
+                "https://i.imgur.com/2s9U7uN.jpeg"
+            ]
         },
         ionfury: {
             title: "Ion Fury",
@@ -572,7 +886,12 @@
             pill1: "Темп: высокий, но не безумный",
             pill2: "Сложность: честная, без тупых моментов",
             pill3: "Железо: идёт вообще на всём",
-            tagline: "современный Duke Nukem 3D-вибе"
+            tagline: "современный Duke Nukem 3D-вибе",
+            shots: [
+                "https://i.imgur.com/J5hU9dM.jpeg",
+                "https://i.imgur.com/8q7Vq2S.jpeg",
+                "https://i.imgur.com/cW9Jw5z.jpeg"
+            ]
         },
         amid: {
             title: "AMID EVIL",
@@ -581,7 +900,12 @@
             pill1: "Темп: высокий",
             pill2: "Сложность: бодрый mid-core",
             pill3: "Железо: комфортно для среднего ноута",
-            tagline: "олдскул, но с фэнтези и магией"
+            tagline: "олдскул, но с фэнтези и магией",
+            shots: [
+                "https://i.imgur.com/Gf6yV5M.jpeg",
+                "https://i.imgur.com/3D4mZkX.jpeg",
+                "https://i.imgur.com/FxFuoKp.jpeg"
+            ]
         },
         quake: {
             title: "Quake (Remaster)",
@@ -590,7 +914,12 @@
             pill1: "Темп: очень высокий",
             pill2: "Сложность: зависит от уровня",
             pill3: "Железо: отлично идёт даже на старых машинах",
-            tagline: "тот самый Quake, только почище"
+            tagline: "тот самый Quake, только почище",
+            shots: [
+                "https://i.imgur.com/GiDl6G7.jpeg",
+                "https://i.imgur.com/tX1S0Vt.jpeg",
+                "https://i.imgur.com/1pV8S2l.jpeg"
+            ]
         },
         doom2: {
             title: "DOOM II",
@@ -599,7 +928,12 @@
             pill1: "Темп: постоянный экшен",
             pill2: "Сложность: зависит от выбранной сложности",
             pill3: "Железо: запустится почти на калькуляторе",
-            tagline: "история шутеров начинается тут"
+            tagline: "история шутеров начинается тут",
+            shots: [
+                "https://i.imgur.com/R6X58z4.jpeg",
+                "https://i.imgur.com/xzvZy5B.jpeg",
+                "https://i.imgur.com/aYbZQ2X.jpeg"
+            ]
         },
         prodeus: {
             title: "Prodeus",
@@ -608,7 +942,12 @@
             pill1: "Темп: высокий, динамичный",
             pill2: "Сложность: местами суровая",
             pill3: "Железо: лучше иметь видеокарту, но можно подкрутить настройки",
-            tagline: "кровавый DOOM в пиксельном обличье"
+            tagline: "кровавый DOOM в пиксельном обличье",
+            shots: [
+                "https://i.imgur.com/2diXKxq.jpeg",
+                "https://i.imgur.com/DnE7Gkt.jpeg",
+                "https://i.imgur.com/qW3gBuJ.jpeg"
+            ]
         },
         devildaggers: {
             title: "Devil Daggers",
@@ -617,7 +956,12 @@
             pill1: "Темп: растёт с каждой секундой",
             pill2: "Сложность: очень высокая",
             pill3: "Железо: требовательность мизерная",
-            tagline: "идеален как \"одна попытка перед сном\""
+            tagline: "идеален как «одна попытка перед сном»",
+            shots: [
+                "https://i.imgur.com/jpP9uRr.jpeg",
+                "https://i.imgur.com/fRFRzvA.jpeg",
+                "https://i.imgur.com/naV2ikY.jpeg"
+            ]
         },
         warframe: {
             title: "Warframe",
@@ -626,7 +970,12 @@
             pill1: "Темп: высокий, много движения",
             pill2: "Сложность: разобраться поначалу сложновато",
             pill3: "Железо: оптимизация норм, но видеокарта всё-таки нужна",
-            tagline: "бесплатный космический паркур-шутер"
+            tagline: "бесплатный космический паркур-шутер",
+            shots: [
+                "https://i.imgur.com/XowsmFn.jpeg",
+                "https://i.imgur.com/vDhX9ct.jpeg",
+                "https://i.imgur.com/7pGVA7L.jpeg"
+            ]
         },
         titanfall2: {
             title: "Titanfall 2 (кампания)",
@@ -635,7 +984,12 @@
             pill1: "Темп: чередование экшена и спокойных моментов",
             pill2: "Сложность: комфортная, без боли",
             pill3: "Железо: придётся чуть ужать графику на слабом GPU, но оно того стоит",
-            tagline: "один из лучших шутеров с сюжетом"
+            tagline: "один из лучших шутеров с сюжетом",
+            shots: [
+                "https://i.imgur.com/oHk2IUx.jpeg",
+                "https://i.imgur.com/6QggFfW.jpeg",
+                "https://i.imgur.com/8iInt7g.jpeg"
+            ]
         }
     };
 
@@ -650,6 +1004,49 @@
     const previewGameTitle = document.getElementById("previewGameTitle");
     const previewTagline = document.getElementById("previewTagline");
 
+    const galleryImage = document.getElementById("galleryImage");
+    const galleryDots = document.getElementById("galleryDots");
+
+    let currentGameId = "dusk";
+    let currentShotIndex = 0;
+
+    function buildDots(game) {
+        galleryDots.innerHTML = "";
+        game.shots.forEach((_, idx) => {
+            const dot = document.createElement("div");
+            dot.className = "gallery-dot" + (idx === currentShotIndex ? " active" : "");
+            galleryDots.appendChild(dot);
+        });
+    }
+
+    function updateGallery(game) {
+        if (!game.shots || !game.shots.length) return;
+        const url = game.shots[currentShotIndex];
+        galleryImage.classList.add("fade");
+        setTimeout(() => {
+            galleryImage.style.backgroundImage = `url('${url}')`;
+            galleryImage.classList.remove("fade");
+        }, 160);
+        buildDots(game);
+    }
+
+    function prevShot() {
+        const game = gamesData[currentGameId];
+        if (!game || !game.shots || !game.shots.length) return;
+        currentShotIndex = (currentShotIndex - 1 + game.shots.length) % game.shots.length;
+        updateGallery(game);
+    }
+
+    function nextShot() {
+        const game = gamesData[currentGameId];
+        if (!game || !game.shots || !game.shots.length) return;
+        currentShotIndex = (currentShotIndex + 1) % game.shots.length;
+        updateGallery(game);
+    }
+
+    window.prevShot = prevShot;
+    window.nextShot = nextShot;
+
     function setActiveCard(card) {
         gameCards.forEach(c => c.classList.remove("active"));
         card.classList.add("active");
@@ -658,6 +1055,9 @@
     function updateDetails(id) {
         const g = gamesData[id];
         if (!g) return;
+
+        currentGameId = id;
+        currentShotIndex = 0;
 
         detailsContainer.classList.remove("fade-enter");
         void detailsContainer.offsetWidth;
@@ -672,6 +1072,8 @@
 
         previewGameTitle.textContent = g.title;
         previewTagline.textContent = g.tagline;
+
+        updateGallery(g);
     }
 
     gameCards.forEach(card => {
@@ -681,6 +1083,42 @@
             updateDetails(id);
         });
     });
+
+    /* Настройки */
+    const settingsToggle = document.getElementById("settingsToggle");
+    const settingsPanel = document.getElementById("settingsPanel");
+    const themeButtons = document.querySelectorAll(".theme-pill");
+    const compactToggle = document.getElementById("compactToggle");
+    const brightnessRange = document.getElementById("brightnessRange");
+    const bodyEl = document.body;
+
+    settingsToggle.addEventListener("click", () => {
+        settingsPanel.classList.toggle("open");
+    });
+
+    themeButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const theme = btn.getAttribute("data-theme");
+            bodyEl.classList.remove("theme-dark","theme-light","theme-neon");
+            bodyEl.classList.add("theme-" + theme);
+
+            themeButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+        });
+    });
+
+    compactToggle.addEventListener("change", () => {
+        if (compactToggle.checked) bodyEl.classList.add("compact");
+        else bodyEl.classList.remove("compact");
+    });
+
+    brightnessRange.addEventListener("input", () => {
+        const v = Number(brightnessRange.value) / 100;
+        document.documentElement.style.setProperty("--siteBrightness", v.toString());
+    });
+
+    /* Инициализация */
+    updateDetails(currentGameId);
 </script>
 
 </body>
