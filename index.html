@@ -594,3 +594,94 @@
         },
         doom2: {
             title: "DOOM II",
+            genre: "олдскул-шутер • демоны и дробовик",
+            desc: "DOOM II — легендарное продолжение первого DOOM. Простая, но цепляющая формула: ты, демоны, дробовик и лабиринт из коридоров. Вечный классический темп без кат-сцен и лишнего.",
+            pill1: "Темп: постоянный экшен",
+            pill2: "Сложность: зависит от выбранной сложности",
+            pill3: "Железо: запустится почти на калькуляторе",
+            tagline: "история шутеров начинается тут"
+        },
+        prodeus: {
+            title: "Prodeus",
+            genre: "мясной боевик • псевдо-пиксели",
+            desc: "Prodeus — современный DOOM, пропущенный через фильтр пиксельной стилизации. Море крови, плотный саундтрек и мощная стрельба. Графика выглядит круто, но нагрузка мягче, чем у AAA-игр.",
+            pill1: "Темп: высокий, динамичный",
+            pill2: "Сложность: местами суровая",
+            pill3: "Железо: лучше иметь видеокарту, но можно подкрутить настройки",
+            tagline: "кровавый DOOM в пиксельном обличье"
+        },
+        devildaggers: {
+            title: "Devil Daggers",
+            genre: "арена-шутер • рекорды и выживание",
+            desc: "Devil Daggers — одна арена, один уровень, один шанс. Ты появляешься в круге и держишь оборону как можно дольше. Мрачно, атмосферно и максимально зависательно для любителей челленджа.",
+            pill1: "Темп: растёт с каждой секундой",
+            pill2: "Сложность: очень высокая",
+            pill3: "Железо: требовательность мизерная",
+            tagline: "идеален как \"одна попытка перед сном\""
+        },
+        warframe: {
+            title: "Warframe",
+            genre: "кооперативный экшен • паркур и гринд",
+            desc: "Warframe — бесплатный sci-fi экшен с акцентом на скорость, паркур, способности и прокачку. Можно спокойно играть соло, но в коопе раскрывается сильнее. Хороший вариант, если хочется подвигацца и пострелять онлайн.",
+            pill1: "Темп: высокий, много движения",
+            pill2: "Сложность: разобраться поначалу сложновато",
+            pill3: "Железо: оптимизация норм, но видеокарта всё-таки нужна",
+            tagline: "бесплатный космический паркур-шутер"
+        },
+        titanfall2: {
+            title: "Titanfall 2 (кампания)",
+            genre: "сюжетный шутер • мехи и паркур",
+            desc: "Titanfall 2 — кампания на 6–8 часов, но почти каждая миссия запоминается. Сочетание быстрых перемещений по стенам, стрельбы и управления огромным мехом делает игру очень динамичной.",
+            pill1: "Темп: чередование экшена и спокойных моментов",
+            pill2: "Сложность: комфортная, без боли",
+            pill3: "Железо: придётся чуть ужать графику на слабом GPU, но оно того стоит",
+            tagline: "один из лучших шутеров с сюжетом"
+        }
+    };
+
+    const gameCards = document.querySelectorAll(".game-card");
+    const detailsContainer = document.getElementById("detailsContainer");
+    const titleEl = document.getElementById("detailsTitle");
+    const genreEl = document.getElementById("detailsGenre");
+    const descEl = document.getElementById("detailsDesc");
+    const pill1El = document.getElementById("detailsPill1");
+    const pill2El = document.getElementById("detailsPill2");
+    const pill3El = document.getElementById("detailsPill3");
+    const previewGameTitle = document.getElementById("previewGameTitle");
+    const previewTagline = document.getElementById("previewTagline");
+
+    function setActiveCard(card) {
+        gameCards.forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+    }
+
+    function updateDetails(id) {
+        const g = gamesData[id];
+        if (!g) return;
+
+        detailsContainer.classList.remove("fade-enter");
+        void detailsContainer.offsetWidth;
+        detailsContainer.classList.add("fade-enter");
+
+        titleEl.textContent = g.title;
+        genreEl.textContent = g.genre;
+        descEl.textContent = g.desc;
+        pill1El.textContent = g.pill1;
+        pill2El.textContent = g.pill2;
+        pill3El.textContent = g.pill3;
+
+        previewGameTitle.textContent = g.title;
+        previewTagline.textContent = g.tagline;
+    }
+
+    gameCards.forEach(card => {
+        card.addEventListener("click", () => {
+            const id = card.getAttribute("data-id");
+            setActiveCard(card);
+            updateDetails(id);
+        });
+    });
+</script>
+
+</body>
+</html>
